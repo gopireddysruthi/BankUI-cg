@@ -1,5 +1,7 @@
 package com.bankui.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +33,7 @@ public class AccountOpenController {
 	@RequestMapping("/create-account")
 	public String showLoginScreen(@ModelAttribute Customer customer, Model model) {
 		//Call the API and pass this customer object 
-		String url ="http://localhost:8080/customer";
+		String url ="http://localhost:8181/customer";
 		RestTemplate restTemplate = new RestTemplate(); 
 		Customer c = restTemplate.postForObject(url, customer, Customer.class);
 		model.addAttribute("user", user);
@@ -40,7 +42,7 @@ public class AccountOpenController {
 	}
 	
 	@RequestMapping("/process-login")
-	public String processLogin(@ModelAttribute UserInfo user, Model model) {
+	public String processLogin(@ModelAttribute UserInfo user, Model model, HttpSession session) {
 		//generate encoded auth_code using username and password and attach it to headers
 		HttpHeaders headers = new HttpHeaders();
 		headers.setBasicAuth(user.getUsername(), user.getPassword());
@@ -50,11 +52,12 @@ public class AccountOpenController {
 		
 		//call the api
 		RestTemplate restTemplate = new RestTemplate();
-		String url="http://localhost:8080/user";
+		String url="http://localhost:8181/user";
 		
 		try {
 			ResponseEntity<UserInfo> entity = restTemplate.exchange(url, HttpMethod.GET, request, UserInfo.class);
 			UserInfo u = entity.getBody();
+			session.setAttribute("username", u.getUsername()); //JSESSIONID
 			model.addAttribute("user", u);
 			return "dashboard";
 		}
@@ -70,6 +73,14 @@ public class AccountOpenController {
 	public String showLogin(Model model) {
 		model.addAttribute("user", user);
 		model.addAttribute("msg", ""); 
+		return "login";
+	}
+	
+	@RequestMapping("/logout")
+	public String showLogout(Model model, HttpSession session) {
+		model.addAttribute("user", user);
+		model.addAttribute("msg", "You are logged out");
+		session.invalidate();
 		return "login";
 	}
 }
