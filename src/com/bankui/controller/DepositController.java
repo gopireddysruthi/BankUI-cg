@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
-import com.bankui.beans.Deposite;
+import com.bankui.beans.Deposit;
 import com.bankui.beans.Transaction;
 
 
@@ -22,10 +22,10 @@ import com.bankui.beans.Transaction;
 public class DepositController {
 
 	@Autowired
-	private Deposite deposit;
+	private Deposit deposit;
 	
 	@RequestMapping("/process-deposit")
-	public String processDeposit(@ModelAttribute Deposite deposit, HttpSession session, Model model, @RequestParam("amount") double amount) 
+	public String processDeposit(@ModelAttribute Deposit deposit, HttpSession session, Model model, @RequestParam("amount") double amount) 
 	{
 		        //connect to the API
 		        RestTemplate restTemplate= new RestTemplate(); 
@@ -43,8 +43,8 @@ public class DepositController {
 				HttpEntity<Object> request = new HttpEntity<>(deposit, headers); 
 				
 				try {
-					ResponseEntity entity = restTemplate.exchange(url, HttpMethod.POST, request, Deposite.class);
-					Deposite deposit1 = (Deposite) entity.getBody();
+					ResponseEntity entity = restTemplate.exchange(url, HttpMethod.POST, request, Deposit.class);
+					Deposit deposit1 = (Deposit) entity.getBody();
 					model.addAttribute("deposit", deposit);
 					return "dashboard/deposit_confirm";
 				}

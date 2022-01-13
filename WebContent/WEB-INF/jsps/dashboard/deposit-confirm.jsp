@@ -1,4 +1,4 @@
-<%@page import="com.bankui.beans.Deposite"%>
+<%@page import="com.bankui.beans.Deposit"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -32,7 +32,7 @@
 			<div class="col-lg-1"></div>
 			<div class="col-lg-10">
 			 
-			<% Deposite deposit = (Deposite)request.getAttribute("deposite"); %> 
+			<% Deposit deposit = (Deposit)request.getAttribute("deposit"); %> 
 			 <div class="card border-primary mb-3">
   <div class="card-header">Deposit Confirmation/Success</div>
   

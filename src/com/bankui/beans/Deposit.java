@@ -3,7 +3,7 @@ package com.bankui.beans;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Deposite {
+public class Deposit {
     
 	private double amount;
 
